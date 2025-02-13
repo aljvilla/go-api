@@ -2,6 +2,7 @@ package routes
 
 import (
 	"miapp/internal/handlers"
+	"miapp/internal/middleware"
 	"net/http"
 )
 
@@ -9,9 +10,21 @@ import (
 func SetupRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("/login", handlers.LoginHandler)
+	mux.Handle("/user/update-password",
+		middleware.MiddlewaresConcat(
+			http.HandlerFunc(handlers.UpdatePasswordHandler),
+			middleware.AuthMiddleware,
+		),
+	)
 	mux.HandleFunc("/empresas", handlers.GetEmpresasHandler)
-	mux.HandleFunc("/empresas/create", handlers.CreateEmpresaHandler)
+	mux.Handle("/empresas/create",
+		middleware.MiddlewaresConcat(
+			http.HandlerFunc(handlers.CreateEmpresaHandler),
+			middleware.AuthMiddleware,
+		),
+	)
 	mux.HandleFunc("/empresas/update/", handlers.UpdateEmpresaHandler)
-
+	mux.HandleFunc("/empresas/delete/", handlers.DeleteEmpresaHandler)
 	return mux
 }

@@ -93,3 +93,16 @@ func GetEmpresaById(id int) (*models.Empresa, error) {
 
 	return &empresa, nil
 }
+
+// Actualiza una empresa
+func DeleteEmpresa(id int) error {
+	query := `
+						DELETE
+						FROM 
+							empresas 
+						WHERE 
+							id = $1;`
+	_, err := database.DB.Exec(context.Background(), query, id)
+	log.Println(err)
+	return err
+}

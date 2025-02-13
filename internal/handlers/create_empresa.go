@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
+	"miapp/internal/middleware"
 	"miapp/internal/models"
 	"miapp/internal/repositories"
 	"net/http"
@@ -12,6 +14,13 @@ func CreateEmpresaHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 		return
 	}
+
+	userID := r.Context().Value(middleware.UserIDKey)
+	if userID == nil {
+		http.Error(w, "Usuario no autorizado", http.StatusUnauthorized)
+		return
+	}
+	log.Println("Usuario autorizado:", userID)
 
 	var input models.Empresa
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {

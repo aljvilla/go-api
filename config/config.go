@@ -7,7 +7,7 @@ import (
 
 // LoadEnv verifica si las variables de entorno están definidas
 func LoadEnv() {
-	requiredVars := []string{"DATABASE_HOST", "DATABASE_NAME", "DATABASE_PASSWORD", "DATABASE_PORT", "DATABASE_USERNAME"}
+	requiredVars := []string{"DATABASE_HOST", "DATABASE_NAME", "DATABASE_PASSWORD", "DATABASE_PORT", "DATABASE_USERNAME", "SALT"}
 
 	for _, v := range requiredVars {
 		if os.Getenv(v) == "" {
