@@ -45,6 +45,7 @@ func EmpresaExists(numeroIdentificador, tipoIdentificador *string) (bool, error)
 
 // Inserta una nueva empresa
 func InsertEmpresa(input models.Empresa) (int, error) {
+	log.Println(*input.RazonSocial, *input.NumeroIdentificador, *input.TipoNumeroIdentificador)
 	var id int
 	query := `
 						INSERT 
@@ -58,8 +59,9 @@ func InsertEmpresa(input models.Empresa) (int, error) {
 						VALUES 
 								($1, $2, $3)
 						RETURNING id;`
-	err := database.DB.QueryRow(context.Background(), query, input.RazonSocial, input.NumeroIdentificador, input.TipoNumeroIdentificador).Scan(&id)
+	err := database.DB.QueryRow(context.Background(), query, *input.RazonSocial, *input.NumeroIdentificador, *input.TipoNumeroIdentificador).Scan(&id)
 	if err != nil {
+		log.Println(err)
 		return 0, err
 	}
 	return id, nil

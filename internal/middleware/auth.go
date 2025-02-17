@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -17,6 +18,7 @@ const UserIDKey ContextKey = "userID"
 // Middleware para validar JWT
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Validando token")
 		token := r.Header.Get("Authorization")
 		if token == "" {
 			http.Error(w, "Token requerido", http.StatusForbidden)

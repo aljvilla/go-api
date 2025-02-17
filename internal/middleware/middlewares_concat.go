@@ -1,6 +1,8 @@
 package middleware
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // ChainMiddlewares permite encadenar varios middlewares de forma flexible
 func MiddlewaresConcat(handler http.Handler, middlewares ...func(http.Handler) http.Handler) http.Handler {

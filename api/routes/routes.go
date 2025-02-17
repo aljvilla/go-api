@@ -11,6 +11,12 @@ func SetupRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/login", handlers.LoginHandler)
+	mux.Handle("/upload", middleware.MiddlewaresConcat(
+		http.HandlerFunc(handlers.BulkInsertEmpresaHandler),
+		middleware.AuthMiddleware,
+		middleware.UploadFileMiddleware,
+		middleware.ValidateEmpresaMiddleware,
+	))
 	mux.Handle("/user/update-password",
 		middleware.MiddlewaresConcat(
 			http.HandlerFunc(handlers.UpdatePasswordHandler),
